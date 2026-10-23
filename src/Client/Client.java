@@ -3,30 +3,32 @@ import java.io.*;
 import java.net.*;
 
 public class Client {
+
     public static void main(String[] args) {
+
         try {
             Socket socket = new Socket("localhost", 1234);
 
-            BufferedReader clavier = new BufferedReader(
-                    new InputStreamReader(System.in));
+            ObjectOutputStream out = new ObjectOutputStream(
+                    socket.getOutputStream());
+            out.flush();
 
-            PrintWriter pw = new PrintWriter(
-                    socket.getOutputStream(), true);
+            ObjectInputStream in = new ObjectInputStream(
+                    socket.getInputStream());
 
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
+            Operation op = new Operation(55, "*", 25);
 
-            System.out.print("Entrez une operation (ex: 55 * 25) : ");
-            String operation = clavier.readLine();
+            out.writeObject(op);
 
-            pw.println(operation);
+            String reponse = (String) in.readObject();
 
-            String reponse = br.readLine();
             System.out.println(reponse);
 
+            in.close();
+            out.close();
             socket.close();
 
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("Erreur : " + e.getMessage());
         }
     }

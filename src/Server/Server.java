@@ -3,72 +3,71 @@ import java.io.*;
 import java.net.*;
 
 public class Server {
+
     public static void main(String[] args) {
+
         try {
             ServerSocket serveur = new ServerSocket(1234);
             System.out.println("Serveur en attente...");
 
-            while (true) {
-                Socket socket = serveur.accept();
+            Socket socket = serveur.accept();
+            System.out.println("Client connecté.");
 
-                BufferedReader br = new BufferedReader(
-                        new InputStreamReader(socket.getInputStream()));
+            ObjectOutputStream out = new ObjectOutputStream(
+                    socket.getOutputStream());
+            out.flush();
 
-                PrintWriter pw = new PrintWriter(
-                        socket.getOutputStream(), true);
+            ObjectInputStream in = new ObjectInputStream(
+                    socket.getInputStream());
 
-                String operation = br.readLine();
-                String[] parties = operation.split(" ");
+            Operation op = (Operation) in.readObject();
 
-                String reponse;
+            double a = op.getA();
+            String operateur = op.getOperateur();
+            double b = op.getB();
 
-                if (parties.length != 3) {
-                    reponse = "Erreur : operation invalide";
-                } else {
-                    try {
-                        double a = Double.parseDouble(parties[0]);
-                        String op = parties[1];
-                        double b = Double.parseDouble(parties[2]);
-                        double resultat = 0;
+            double resultat = 0;
+            String reponse;
 
-                        switch (op) {
-                            case "+":
-                                resultat = a + b;
-                                break;
-                            case "-":
-                                resultat = a - b;
-                                break;
-                            case "*":
-                                resultat = a * b;
-                                break;
-                            case "/":
-                                if (b == 0) {
-                                    reponse = "Erreur : division par zero";
-                                    pw.println(reponse);
-                                    socket.close();
-                                    continue;
-                                }
-                                resultat = a / b;
-                                break;
-                            default:
-                                reponse = "Erreur : operateur invalide";
-                                pw.println(reponse);
-                                socket.close();
-                                continue;
-                        }
+            switch (operateur) {
+                case "+":
+                    resultat = a + b;
+                    reponse = "Resultat : " + resultat;
+                    break;
 
+                case "-":
+                    resultat = a - b;
+                    reponse = "Resultat : " + resultat;
+                    break;
+
+                case "*":
+                    resultat = a * b;
+                    reponse = "Resultat : " + resultat;
+                    break;
+
+                case "/":
+                    if (b == 0) {
+                        reponse = "Erreur : division par zero";
+                    } else {
+                        resultat = a / b;
                         reponse = "Resultat : " + resultat;
-
-                    } catch (NumberFormatException e) {
-                        reponse = "Erreur : nombres invalides";
                     }
-                }
+                    break;
 
-                pw.println(reponse);
-                socket.close();
+                default:
+                    reponse = "Erreur : operateur invalide";
             }
 
-        } catch (IOException e) {
+            out.writeObject(reponse);
+
+            System.out.println("Reponse envoyee : " + reponse);
+
+            in.close();
+            out.close();
+            socket.close();
+            serveur.close();
+
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("Erreur : " + e.getMessage());
         }
     }

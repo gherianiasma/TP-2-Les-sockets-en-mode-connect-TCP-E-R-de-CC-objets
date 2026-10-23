@@ -44,5 +44,42 @@ Le client envoie une opération arithmétique au serveur. Le serveur traite l'op
 
 Une vérification est effectuée côté serveur pour détecter les opérations mal formées et éviter la division par zéro.
 
+## Activité 2-2:
+1. Objectif
 
+Le but de cette activité est de réaliser une communication entre un client et un serveur en Java avec les sockets TCP, en utilisant l'échange d'objets.
 
+### 2. description
+
+Le projet contient trois classes Java :
+
+Operation.java : représente l'opération mathématique et implémente l'interface Serializable.
+
+Client.java : crée et envoie un objet au serveur, puis reçoit et affiche le résultat.
+
+Server.java : reçoit l'objet, effectue le calcul et renvoie le résultat au client.
+
+### 3. Technologies utilisées
+
+Java
+
+Sockets TCP
+
+Serializable
+
+ObjectInputStream
+
+ObjectOutputStream
+
+IntelliJ IDEA
+
+### 4. Exemple d'exécution
+Le client envoie l'opération : 55 * 25
+
+### 5.server:
+
+![server2-2.png](cap/server2-2.png)
+
+### 6.client:
+
+![client 2-2 .png](cap/client%202-2%20.png)
