@@ -16,8 +16,8 @@ Le client envoie une opération arithmétique au serveur. Le serveur traite l'op
 2. Saisir une opération arithmétique.
 3. Envoyer l'opération au serveur avec `PrintWriter`.
 4. Recevoir et afficher la réponse avec `BufferedReader`.
+![client2-1 mod.png](cap/client2-1%20mod.png)
 
-![client2-1.png](cap/client2-1.png)
 
 **Côté serveur :**
 1. Attendre la connexion d'un client avec `ServerSocket`.
@@ -26,7 +26,7 @@ Le client envoie une opération arithmétique au serveur. Le serveur traite l'op
 4. Effectuer le calcul selon l'opérateur.
 5. Envoyer le résultat au client avec `PrintWriter`.
 
-![server2-1.png](cap/server2-1.png)
+![server2-1 mod.png](cap/server2-1%20mod.png)
 
 ### 3. Classes utilisées
 

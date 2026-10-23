@@ -3,32 +3,31 @@ import java.io.*;
 import java.net.*;
 
 public class Client {
+    public static void main(String[] args) {
+        try {
+            Socket socket = new Socket("localhost", 1234);
 
-    public static void main(String[] args) throws IOException {
+            BufferedReader clavier = new BufferedReader(
+                    new InputStreamReader(System.in));
 
-        Socket socket = new Socket("localhost", 1234);
+            PrintWriter pw = new PrintWriter(
+                    socket.getOutputStream(), true);
 
-        OutputStream os = socket.getOutputStream();
-        PrintWriter pw = new PrintWriter(os, true);
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
 
-        InputStream is = socket.getInputStream();
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
+            System.out.print("Entrez une operation (ex: 55 * 25) : ");
+            String operation = clavier.readLine();
 
-        BufferedReader clavier = new BufferedReader(
-                new InputStreamReader(System.in)
-        );
+            pw.println(operation);
 
-        System.out.println("Connecté au serveur.");
+            String reponse = br.readLine();
+            System.out.println(reponse);
 
-        System.out.print("Entrez une opération (ex: 55 * 25) : ");
-        String operation = clavier.readLine();
+            socket.close();
 
-        pw.println(operation);
-
-        String reponse = br.readLine();
-        System.out.println(reponse);
-
-        socket.close();
+        } catch (IOException e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
     }
 }
